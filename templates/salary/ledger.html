@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Salary Ledger</h3>
+
+<form class="row g-2 mb-3" method="post" action="/salary/pay">
+  <div class="col-md-4">
+    <label class="form-label">Employee</label>
+    <select name="employee_id" class="form-select" required>
+      {% for e in employees %}
+      <option value="{{ e.id }}">{{ e.name }} (Pending ₹{{ "%.2f"|format(pending_map.get(e.id, 0)) }})</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">Amount (₹)</label>
+    <input type="number" step="0.01" min="0.01" name="amount" class="form-control" required>
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">Method</label>
+    <select name="method" class="form-select">
+      <option value="CASH">Cash</option>
+      <option value="BANK_TRANSFER">Bank Transfer</option>
+      <option value="UPI">UPI</option>
+      <option value="CHEQUE">Cheque</option>
+    </select>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Remarks</label>
+    <input name="remarks" class="form-control" placeholder="Optional">
+  </div>
+  <div class="col-md-1 d-flex align-items-end">
+    <button class="btn btn-success w-100">Pay</button>
+  </div>
+</form>
+
+<div class="mb-2">
+  <a class="btn btn-sm btn-outline-secondary" href="/salary/export.csv">Export CSV</a>
+</div>
+
+<table class="table table-sm table-striped">
+  <thead>
+    <tr>
+      <th>ID</th><th>Employee</th><th>Type</th><th>Amount</th><th>Method</th><th>Date</th><th>Remarks</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in tx %}
+    <tr>
+      <td>{{ r.id }}</td>
+      <td>{{ r.employee_id }}</td>
+      <td>{{ r.type }}</td>
+      <td>₹{{ "%.2f"|format(r.amount) }}</td>
+      <td>{{ r.payment_method or "" }}</td>
+      <td>{{ r.txn_date }}</td>
+      <td>{{ r.remarks or "" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
