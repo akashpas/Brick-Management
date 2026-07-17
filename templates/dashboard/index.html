@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Dashboard</h3>
+<div class="row g-3">
+  <div class="col-md-3"><div class="card"><div class="card-body">
+    <div class="fw-bold">Total Employees</div><div class="display-6">{{ total_employees }}</div>
+  </div></div></div>
+  <div class="col-md-3"><div class="card"><div class="card-body">
+    <div class="fw-bold">Workers</div><div class="display-6">{{ workers }}</div>
+  </div></div></div>
+  <div class="col-md-3"><div class="card"><div class="card-body">
+    <div class="fw-bold">Managers</div><div class="display-6">{{ managers }}</div>
+  </div></div></div>
+  <div class="col-md-3"><div class="card"><div class="card-body">
+    <div class="fw-bold">Total Inventory</div><div class="display-6">{{ total_inventory }}</div>
+  </div></div></div>
+  <div class="col-md-3"><div class="card"><div class="card-body">
+    <div class="fw-bold">Total Production Records</div><div class="display-6">{{ total_production }}</div>
+  </div></div></div>
+  <div class="col-md-3"><div class="card"><div class="card-body">
+    <div class="fw-bold">Pending Salary (₹)</div><div class="display-6">{{ "%.2f"|format(pending_salary_sum) }}</div>
+  </div></div></div>
+</div>
+
+<h5 class="mt-4">Brick Types</h5>
+<ul>
+  {% for b in brick_items %}
+  <li>{{ b.name }} — Rate ₹{{ "%.2f"|format(b.rate_per_brick) }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}
